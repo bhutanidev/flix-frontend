@@ -36,28 +36,43 @@ export default function Video() {
   const playerRef = useRef(null);
   
   // ✅ Updated videoJsOptions with credentials support
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    // ✅ Configure HLS to send credentials
-    html5: {
-      vhs: {
-        xhr: {
-          beforeRequest: function(options:any) {
-            // ✅ Force credentials to be sent with all HLS requests
-            options.withCredentials = true;
-            return options;
+const videoJsOptions = {
+  autoplay: true,
+  controls: true,
+  responsive: true,
+  fluid: true,
+  // ✅ More explicit VHS configuration
+  html5: {
+    vhs: {
+      xhr: {
+        beforeRequest: function(options:any) {
+          console.log('🔧 VHS XHR Before Request:', options.uri);
+          options.withCredentials = true;
+          
+          // ✅ Set headers explicitly
+          if (!options.headers) {
+            options.headers = {};
           }
+          
+          // ✅ Force credentials in headers too
+          options.headers['credentials'] = 'include';
+          
+          console.log('🔧 XHR Options:', options);
+          return options;
+        },
+        onRequest: function(options:any) {
+          console.log('🔧 VHS XHR On Request:', options.uri);
         }
-      }
-    },
-    sources: [{
-      src: url,
-      type: 'application/x-mpegURL'
-    }]
-  };
+      },
+      // ✅ Additional VHS options
+      withCredentials: true
+    }
+  },
+  sources: [{
+    src: url,
+    type: 'application/x-mpegURL'
+  }]
+};
 
   // @ts-ignore
 const handlePlayerReady = (player:any) => {

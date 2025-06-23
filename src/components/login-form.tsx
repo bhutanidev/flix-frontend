@@ -36,6 +36,7 @@ export function LoginForm({
       console.log(result.data);
       router.push('/videos')
     } catch (error:any) {
+      console.log(error)
       alert(error?.response?.data?.message || "somethig happened unexpectedly");
     }
   }

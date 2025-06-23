@@ -12,8 +12,8 @@ export default function Video() {
   const { slug } = params;
   const [url,setUrl] = useState<String|undefined>()
   const [title,setTitle] = useState<String|undefined>()
-
   const [notFound,setNotFound] = useState<Boolean>(false)
+
   const getUrl = async()=>{
     try {
         const response =  await api.get(`/api/get-signed-cookie?id=${slug}`)
@@ -28,44 +28,64 @@ export default function Video() {
         console.log(error)
     }
   }
+
   useEffect(()=>{
     getUrl()
   },[])
+
   const playerRef = useRef(null);
   
+  // ✅ Updated videoJsOptions with credentials support
   const videoJsOptions = {
     autoplay: true,
     controls: true,
     responsive: true,
     fluid: true,
+    // ✅ Configure HLS to send credentials
+    html5: {
+      vhs: {
+        xhr: {
+          beforeRequest: function(options:any) {
+            // ✅ Force credentials to be sent with all HLS requests
+            options.withCredentials = true;
+            return options;
+          }
+        }
+      }
+    },
     sources: [{
       src: url,
       type: 'application/x-mpegURL'
     }]
   };
-      // @ts-ignore
 
-  const handlePlayerReady = (player) => {
-    playerRef.current = player;
+  // @ts-ignore
+const handlePlayerReady = (player:any) => {
+  playerRef.current = player;
 
-    // You can handle player events here, for example:
-    player.on('waiting', () => {
-      videojs.log('player is waiting');
-    });
+  // ✅ Debug HLS requests
+  player.on('loadstart', () => {
+    console.log('🎬 Video loading started');
+  });
 
-    player.on('dispose', () => {
-      videojs.log('player will dispose');
-    });
-  };
+  player.on('error', (e:any) => {
+    console.error('🔥 Video error:', e);
+    console.error('🔥 Player error:', player.error());
+  });
+
+  // ✅ Monitor network requests
+  player.ready(() => {
+    console.log('🎬 Player ready, tech:', player.tech(true));
+  });
+};
+
 
   return (
     <>
     {notFound?(<SafetyPage type='error' message='video not found' />):(<>
       <div className=' text-3xl h-1/12 p-3 bg-background'>{"Sample video of a girl teaching"}</div>
       <div className=' h-11/12 w-full'> <VideoJS  options={videoJsOptions} onReady={handlePlayerReady} /></div>
-      
     </>)}
-
     </>
   );
 }

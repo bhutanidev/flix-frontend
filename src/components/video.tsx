@@ -8,31 +8,29 @@ export const VideoJS = (props:any) => {
   const {options, onReady} = props;
 
   React.useEffect(() => {
-
     // Make sure Video.js player is only initialized once
     if (!playerRef.current) {
       // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode. 
       const videoElement = document.createElement("video-js");
 
       videoElement.classList.add('vjs-big-play-centered');
+      // ✅ Add crossorigin attribute for credentials
+      videoElement.setAttribute('crossorigin', 'use-credentials');
+      
       // @ts-ignore
       videoRef.current.appendChild(videoElement);
-      // @ts-ignore
 
+      // @ts-ignore
       const player = playerRef.current = videojs(videoElement, options, () => {
         videojs.log('player is ready');
         onReady && onReady(player);
       });
 
-    // You could update an existing player in the `else` block here
-    // on prop change, for example:
     } else {
       const player = playerRef.current;
       // @ts-ignore
-
       player.autoplay(options.autoplay);
       // @ts-ignore
-
       player.src(options.sources);
     }
   }, [options, videoRef]);
@@ -43,10 +41,8 @@ export const VideoJS = (props:any) => {
 
     return () => {
       // @ts-ignore
-
       if (player && !player.isDisposed()) {
       // @ts-ignore
-
         player.dispose();
         playerRef.current = null;
       }

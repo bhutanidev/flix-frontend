@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import api from "@/lib/axiosInstance"
+import { toast } from "sonner"
 
 export function SignupForm({
   className,
@@ -31,22 +32,21 @@ export function SignupForm({
     const password = passwordRef.current?.value || ""
 
     if (!name || !email || !password) {
-      alert("Please fill in all fields.")
+      toast("Please fill in all fields.")
       return
     }
 
     try {
       const result  = await api.post('/api/signup' , {email,password,name} )
-      console.log(result.data);
       router.push('/signin')
     } catch (error:any) {
-      alert(error?.response?.data?.message || "somethig happened unexpectedly");
+      toast(error?.response?.data?.message || "somethig happened unexpectedly");
     }
   }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className=" border-none">
         <CardHeader>
           <CardTitle>Create an account</CardTitle>
           <CardDescription>

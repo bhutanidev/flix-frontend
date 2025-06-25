@@ -1,27 +1,41 @@
+// In your VideoJS component
 import React from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 
-export const VideoJS = (props:any) => {
+export const VideoJS = (props: any) => {
   const videoRef = React.useRef(null);
   const playerRef = React.useRef(null);
-  const {options, onReady} = props;
+  const { options, onReady } = props;
 
   React.useEffect(() => {
-    // Make sure Video.js player is only initialized once
     if (!playerRef.current) {
-      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode. 
       const videoElement = document.createElement("video-js");
-
+      
       videoElement.classList.add('vjs-big-play-centered');
-      // ✅ Add crossorigin attribute for credentials
+      // ✅ Add these attributes for better functionality
       videoElement.setAttribute('crossorigin', 'use-credentials');
+      videoElement.setAttribute('preload', 'metadata');
       
       // @ts-ignore
       videoRef.current.appendChild(videoElement);
 
       // @ts-ignore
-      const player = playerRef.current = videojs(videoElement, options, () => {
+      const player = playerRef.current = videojs(videoElement, {
+        ...options,
+        // ✅ Ensure these options are set
+        controls: true,
+        fluid: options.fluid !== false,
+        responsive: true,
+        aspectRatio: options.aspectRatio || '16:9',
+        playbackRates: options.playbackRates || [0.5, 1, 1.25, 1.5, 2],
+        // ✅ Fix fullscreen
+        fullscreen: {
+          options: {
+            navigationUI: 'hide'
+          }
+        }
+      }, () => {
         videojs.log('player is ready');
         onReady && onReady(player);
       });
@@ -35,14 +49,13 @@ export const VideoJS = (props:any) => {
     }
   }, [options, videoRef]);
 
-  // Dispose the Video.js player when the functional component unmounts
   React.useEffect(() => {
     const player = playerRef.current;
 
     return () => {
       // @ts-ignore
       if (player && !player.isDisposed()) {
-      // @ts-ignore
+        // @ts-ignore
         player.dispose();
         playerRef.current = null;
       }
@@ -50,8 +63,8 @@ export const VideoJS = (props:any) => {
   }, [playerRef]);
 
   return (
-    <div data-vjs-player>
-      <div ref={videoRef} />
+    <div data-vjs-player className="w-full h-full">
+      <div ref={videoRef} className="w-full h-full" />
     </div>
   );
 }

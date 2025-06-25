@@ -2,6 +2,7 @@
 import api from "@/lib/axiosInstance";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const LogoutButton = () => {
 
@@ -11,10 +12,10 @@ export const LogoutButton = () => {
         try {
             const res = await api.post('/api/logout')
             router.push('/')
-            alert("logged ou succesfully")
+            toast("logged out succesfully")
         } catch (error) {
             console.log(error)
-            alert("some error in logging out")
+            toast("some error in logging out")
         }
     }
 

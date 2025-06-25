@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Play, Info, ChevronDown, Star, Zap, Shield, Smartphone, Code2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const RotFlixLanding = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -13,40 +14,40 @@ const RotFlixLanding = () => {
   const router = useRouter()
   const heroSlides = [
     {
-      title: "The Matrix Reborn",
-      description: "When reality becomes a prison, only the chosen few can break free from the digital chains that bind humanity.",
-      gradient: "from-green-900/90 to-black/90"
+      title: "Scroll of Doom",
+      description: "You thought you'd stop at one reel. Now it's 4 AM and you're arguing with strangers in the comments.",
+      gradient: "from-red-900/90 to-black/90"
     },
     {
-      title: "Neon Nights",
-      description: "In a city where tomorrow never comes, follow the underground rebels fighting against the corporate machine.",
-      gradient: "from-purple-900/90 to-pink-900/90"
+      title: "Mindless Loop",
+      description: "You've refreshed the feed 12 times. Nothing's new. But here you are. Again.",
+      gradient: "from-pink-900/90 to-purple-900/90"
     },
     {
-      title: "Digital Phantom",
-      description: "When artificial intelligence becomes sentient, the line between human and machine blurs beyond recognition.",
-      gradient: "from-blue-900/90 to-cyan-900/90"
+      title: "Digital Rot",
+      description: "Where critical thinking dies and clickbait thrives. Welcome to your new home.",
+      gradient: "from-orange-900/90 to-red-900/90"
     }
   ];
 
   const features = [
     {
       icon: <Smartphone className="w-8 h-8" />,
-      title: "Stream Everywhere",
-      description: "Watch on any device - phone, tablet, laptop, smart TV, or even your smartwatch.",
-      color: "from-violet-500 to-purple-500"
+      title: "24/7 Doomscroll",
+      description: "Our algorithms ensure you never sleep again.",
+      color: "from-rose-600 to-red-600"
     },
     {
       icon: <Zap className="w-8 h-8" />,
-      title: "Zero Interruptions",
-      description: "Pure cinematic experience with no ads, no breaks, just endless entertainment.",
+      title: "Hyper Engagement",
+      description: "Dopamine hits every 3.2 seconds. Guaranteed.",
       color: "from-orange-500 to-red-500"
     },
     {
       icon: <Shield className="w-8 h-8" />,
-      title: "Flexible Freedom",
-      description: "Start today, pause tomorrow, cancel anytime. Complete control in your hands.",
-      color: "from-emerald-500 to-teal-500"
+      title: "Zero Control",
+      description: "You think you're in charge? Adorable.",
+      color: "from-red-700 to-pink-700"
     }
   ];
 
@@ -75,7 +76,7 @@ const RotFlixLanding = () => {
   const handleEmailSubmit = (e: React.FormEvent | React.KeyboardEvent) => {
     e.preventDefault();
     if (email.trim()) {
-      alert(`🎬 Welcome to RotFlix! We'll send exclusive updates to ${email}`);
+      toast(`🎬 Welcome to RotFlix! We'll send exclusive updates to ${email}`);
       setEmail('');
     }
   };
@@ -131,73 +132,32 @@ const RotFlixLanding = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
         </div>
-        
+
         <div className="relative z-10 text-center max-w-5xl px-6">
           <div className="mb-4">
             <span className="inline-block px-4 py-2 bg-red-600/20 border border-red-500/30 rounded-full text-red-400 text-sm font-semibold backdrop-blur-sm">
-              ✨ Now Streaming
+              🧠 Daily Degeneration
             </span>
           </div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
             <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
-              Unlimited movies,
+              Unlimited Movies ,
             </span>
             <br />
             <span className="bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
-              shows & more
+              Videos and More
             </span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
-            Ready when you are. Watch anywhere, anytime. Cancel anytime.
+            Mindless entertainment
             <br />
-            <span className="text-red-400 font-medium">Your next obsession starts here.</span>
+            <span className="text-red-400 font-medium">Stream exclusive brainrot videos.</span>
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button onClick={handleWatchNow} className="bg-white text-black hover:bg-gray-100 px-10 py-4 text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/20">
-              <Play className="w-6 h-6 mr-3" />
-              Watch Now
-            </Button>
-            <Button onClick={handleWatchNow} className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 px-10 py-4 text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-red-500/30">
-              Sign Up Free
-            </Button>
-            <Button variant="outline" className="border-2 border-white/30 text-white hover:bg-white hover:text-black px-10 py-4 text-lg font-bold transition-all duration-300 transform hover:scale-105 backdrop-blur-sm">
-              <Info className="w-5 h-5 mr-2" />
-              Learn More
-            </Button>
-          </div>
-          
-          {/* Current show info */}
-          <div className="inline-flex items-center gap-4 px-6 py-3 bg-black/40 backdrop-blur-lg rounded-full border border-white/10">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Now Playing:</span>
-            </div>
-            <span className="text-lg font-bold text-red-400">{heroSlides[currentSlide].title}</span>
-          </div>
-        </div>
-
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-white/70" />
-        </div>
-
-        {/* Enhanced slide indicators */}
-        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-3">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`relative transition-all duration-300 ${
-                index === currentSlide 
-                  ? 'w-8 h-3 bg-gradient-to-r from-red-500 to-orange-500 rounded-full' 
-                  : 'w-3 h-3 bg-white/30 hover:bg-white/50 rounded-full'
-              }`}
-            />
-          ))}
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-gradient-to-b from-black via-gray-900/50 to-black">
+      <section className=" bg-gradient-to-b from-black via-gray-900/50 to-black">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
@@ -369,9 +329,7 @@ const RotFlixLanding = () => {
               &copy; 2025 RotFlix. All rights reserved. Made with ❤️ for movie lovers.
             </p>
             <div className="flex items-center gap-4 text-gray-400 text-sm">
-              <span>🌍 English</span>
-              <span>•</span>
-              <span>Built with React & Tailwind CSS</span>
+              <span>All content, trademarks, and images belong to their respective owners. RotFlix claims no ownership.</span>
             </div>
           </div>
         </div>

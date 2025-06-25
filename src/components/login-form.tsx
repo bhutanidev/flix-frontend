@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import api from "@/lib/axiosInstance"
 import axios from "axios"
+import { toast } from "sonner"
 
 export function LoginForm({
   className,
@@ -28,22 +29,21 @@ export function LoginForm({
     const email = emailRef.current?.value || ""
     const password = passwordRef.current?.value || ""
     if(!email || !password){
-      alert("enter valid credentials")
+      toast("enter valid credentials")
     }
 
     try {
       const result  = await api.post('/api/signin' , {email,password} )
-      console.log(result.data);
       router.push('/videos')
     } catch (error:any) {
       console.log(error)
-      alert(error?.response?.data?.message || "somethig happened unexpectedly");
+      toast(error?.response?.data?.message || "somethig happened unexpectedly");
     }
   }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className=" border-none">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
@@ -80,13 +80,13 @@ export function LoginForm({
                 </Button>
               </div>
             </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <button onClick={()=>router.push('/signup')} className="underline underline-offset-4 hover:cursor-pointer">
-                Sign up
-              </button>
-            </div>
           </form>
+          <div className="mt-4 text-center text-sm">
+            Don&apos;t have an account?{" "}
+            <button onClick={()=>router.push('/signup')} className="underline underline-offset-4 hover:cursor-pointer">
+              Sign up
+            </button>
+          </div>
         </CardContent>
       </Card>
     </div>
